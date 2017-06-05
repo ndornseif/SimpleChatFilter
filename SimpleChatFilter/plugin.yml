@@ -1,0 +1,9 @@
+name: SimpleChatFilter
+main: com.neal.simpleChatFilter.SimpleChatFilter
+version: 1.0
+commands:
+   reloadchatblacklist:
+      description: Reloads the chatfilter blacklist
+      usage: /<command>
+      permission: SimpleChatFilter.op
+      permission-message: You need Operator to execute this command
