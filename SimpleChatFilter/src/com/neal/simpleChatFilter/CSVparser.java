@@ -11,7 +11,7 @@ public class CSVparser {
 	
 	static List<String> returnlist = new ArrayList<String>();
 	
-    public static List<String> main(String filepath) throws FileNotFoundException {
+    public static List<String> parse(String filepath) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(filepath));
         scanner.useDelimiter(",");
         while(scanner.hasNext()){

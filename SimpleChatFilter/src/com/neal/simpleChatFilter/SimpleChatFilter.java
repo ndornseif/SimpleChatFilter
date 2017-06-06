@@ -20,28 +20,36 @@ public class SimpleChatFilter extends JavaPlugin{
     	
     	//AutoKick kicks Players that send unallowed Words
         config.addDefault("AutoKick", true);
+        
         //The Message used for Kicking Players
         config.addDefault("KickMessage", "Please dont use words not allowed on this server!");
+        
         //The Message used for Warning Players
         config.addDefault("WarningMessage", "Please dont use words not allowed on this server!");
+        
         //The Directory used to save the Blacklist .csv file
         config.addDefault("BlacklistCSVPath", Bukkit.getWorldContainer().getAbsolutePath()+"/plugins/SimpleChatFilter/blacklist.csv");
+        
         Bukkit.getLogger().info("[SimpleChatFilter] World Default Blacklist directory: "+Bukkit.getWorldContainer().getAbsolutePath()+"/plugins/SimpleChatFilter/blacklist.csv");
+        
         config.options().copyDefaults(true);
         saveConfig();
         
+        //Registering a Listener to check send chat messages
         getServer().getPluginManager().registerEvents(new MessageListener(this), this);
 
         try {
-			blacklist = CSVparser.main(config.getString("BlacklistCSVPath"));
-			Bukkit.getLogger().info("[SimpleChatFilter] Blacklist found");
+        	//Saves the Words in blacklist.csv as a ArrayList<String>
+			blacklist = CSVparser.parse(config.getString("BlacklistCSVPath"));
+			Bukkit.getLogger().info("[SimpleChatFilter] Blacklist found and saved.");
 
 		} catch (FileNotFoundException e) {
 			
 			Bukkit.getLogger().warning("[SimpleChatFilter] The Blacklist file was not found:"+config.getString("BlacklistCSVPath"));
-			Bukkit.getLogger().warning("[SimpleChatFilter] Disabling plugin to prevent errors");
+			Bukkit.getLogger().warning("[SimpleChatFilter] Disabling plugin to prevent errors.");
 
 			//If there is no Blacklist the plugin disables itself
+			//to prevent any errors
 			getServer().getPluginManager().disablePlugin(this);		
 			
 		}
@@ -49,36 +57,37 @@ public class SimpleChatFilter extends JavaPlugin{
     // Fired when plugin is disabled
     @Override
     public void onDisable() {
-		Bukkit.getLogger().info("[SimpleChatFilter] Plugin was Disabled");
+		Bukkit.getLogger().info("[SimpleChatFilter] Plugin was Disabled.");
 
     }
+
+
     public static List<String> getBlacklist(){
 		return blacklist;
     	
     }
+    
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     	if (cmd.getName().equalsIgnoreCase("reloadchatblacklist")) {
-    		if(sender.isOp()){
-    		try {
-    			blacklist = CSVparser.main(config.getString("BlacklistCSVPath"));
-    			sender.sendMessage("Reloading Blacklist:"+config.getString("BlacklistCSVPath"));
-    			return true;
-    		} catch (FileNotFoundException e) {
-    			
-    			sender.sendMessage("The Blacklist file was not found:"+config.getString("BlacklistCSVPath"));
-    			sender.sendMessage("Disabling plugin to prevent errors.");
-
-    			//If there is no Blacklist the plugin disables itself
-    			getServer().getPluginManager().disablePlugin(this);		
-    			return false;
-    		}
-    		}else{
-    			sender.sendMessage("This command can only be used by Operators!");
-    			return false;
-    		}
-    	}  
-            
+    		
+	    		try {
+	            	//Saves the Words in blacklist.csv as a ArrayList<String>
+	    			blacklist = CSVparser.parse(config.getString("BlacklistCSVPath"));
+	    			sender.sendMessage("Reloading Blacklist:"+config.getString("BlacklistCSVPath"));
+	    			return true;
+	    			
+	    		} catch (FileNotFoundException e) {
+	    			
+	    			sender.sendMessage("The Blacklist file was not found:"+config.getString("BlacklistCSVPath"));
+	    			sender.sendMessage("Disabling plugin to prevent errors.");
+	
+	    			//If there is no Blacklist the plugin disables itself
+	    			getServer().getPluginManager().disablePlugin(this);		
+	    			return false;
+	    		}
+    		}  
+      	     
     	return false; 
     }
 }

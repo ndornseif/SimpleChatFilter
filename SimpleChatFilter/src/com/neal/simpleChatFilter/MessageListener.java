@@ -25,8 +25,9 @@ public class MessageListener implements Listener{
     	Player player = event.getPlayer();
     	
 		if(!MessageChecker.isMessageAllowed(event)){
-        event.setCancelled(true);
-	    if(config.getBoolean("AutoKick")){
+			//Prevent message from being send
+			event.setCancelled(true);
+	    	if(config.getBoolean("AutoKick")){
 	            new PlayerKickTask(this.plugin, player).runTask(this.plugin);
 	            
 	        }else{

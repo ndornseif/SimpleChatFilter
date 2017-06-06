@@ -1,5 +1,5 @@
 # SimpleChatFilter  
-## A Bukkit/Spigot Plugin for Minecraft 1.11.2 that allows you to easily blacklist words on your Server  
+### A Bukkit/Spigot Plugin for Minecraft 1.11.2 that allows you to easily blacklist words on your Server  
   
 1. Commands:  
 * /reloadchatblacklist  -  Reloads the blacklist (Requires OP)  
